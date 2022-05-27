@@ -1,4 +1,4 @@
-import { useState, useContext } from 'react';
+import { useState, useContext} from 'react';
 import axios from 'axios';
 //context
 import UserContext from '../contexts/UserContext';
@@ -10,7 +10,7 @@ const Login = () => {
     password: '',
   };
   //Getting setUser function from UserContext to update the of user
-  const { setUser } = useContext(UserContext);
+  const { user, setUser } = useContext(UserContext);
   //This function will help us to navigate between routes
   const navigateTo = useNavigate();
 
@@ -44,10 +44,17 @@ const Login = () => {
     //navigateTo('/');
   };
 
-  return (
-    <div>
-      <h1>Login</h1>
+  const logoutHandler = (e) => {
+    setUser(() => null);
+  };
 
+  return user ? (
+    <div>
+      <button onClick={logoutHandler}>Logout</button>
+    </div>
+  ) : (
+    <div>
+      <h1>{loginState}</h1>
       <p>Please Register/Login</p>
       <button onClick={() => setLoginState('login')}>Login</button>
       <button onClick={() => setLoginState('register')}>Register</button>

@@ -24,10 +24,8 @@ router.post('/register', async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(password, saltRounds);
     const user = await User.create({ username, password: hashedPassword });
-    const token = generateToken(id);
-
-    if ((user, token))
-      res.status(200).json({ username, id: user._id, role: user.role, token });
+    const token = generateToken(user._id);
+    res.status(200).json({ username, id: user._id, role: user.role, token });
   } catch (error) {
     console.log(error);
   }
@@ -44,9 +42,7 @@ router.post('/login', async (req, res) => {
 
     if (user && (await bcrypt.compare(password, user.password))) {
       const token = generateToken(user._id);
-      res
-        .status(200)
-        .json({ username, id: user._id, tokenrole: user.role, token });
+      res.status(200).json({ username, id: user._id, role: user.role, token });
     } else res.status(400).json({ message: 'Invalid Credentials' });
   } catch (error) {
     console.log(error);

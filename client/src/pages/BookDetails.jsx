@@ -9,7 +9,11 @@ import LikeContext from '../contexts/LikeContext';
 import { AiFillLike } from 'react-icons/ai';
 import { AiFillDislike } from 'react-icons/ai';
 
+import UserContext from '../contexts/UserContext';
+
 const BookDetails = () => {
+  const { user } = useContext(UserContext);
+
   const defaultFormData = {
     title: '',
     description: '',
@@ -111,7 +115,9 @@ const BookDetails = () => {
             {likeToggler ? <AiFillDislike /> : <AiFillLike />}
           </button>
           <button onClick={editHandler}>Edit</button>
-          <button onClick={deleteHandler}>Delete</button>
+          {user.role === 'admin' && (
+            <button onClick={deleteHandler}>Delete</button>
+          )}
         </div>
       )}
 

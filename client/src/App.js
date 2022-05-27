@@ -14,6 +14,8 @@ import Login from './pages/Login';
 //providers
 import { UserProvider } from './contexts/UserContext';
 import { LikeProvider } from './contexts/LikeContext';
+import ProtectedRoute from './routeGuard/ProtectedRoute';
+import AdminRoute from './routeGuard/AdminRoute';
 
 const App = () => {
   return (
@@ -25,9 +27,13 @@ const App = () => {
             <NavBar />
             <Routes>
               <Route path="/" element={<Home />} />
-              <Route path="books" element={<Books />} />
-              <Route path="books/:id" element={<BookDetails />} />
-              <Route path="addbook" element={<AddBook />} />
+              <Route element={<ProtectedRoute />}>
+                <Route path="books" element={<Books />} />
+                <Route path="books/:id" element={<BookDetails />} />
+                <Route element={<AdminRoute />}>
+                  <Route path="addbook" element={<AddBook />} />
+                </Route>
+              </Route>
               <Route path="login" element={<Login />} />
             </Routes>
           </div>

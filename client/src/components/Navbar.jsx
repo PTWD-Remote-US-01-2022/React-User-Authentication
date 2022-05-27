@@ -17,7 +17,6 @@ const NavBar = () => {
   const { likes } = useContext(LikeContext);
   const { user } = useContext(UserContext);
 
-  console.log(user);
   return (
     // this empty <> calls React fragments
     <>
@@ -30,14 +29,16 @@ const NavBar = () => {
         </NavLink>
         {/* If we have an authenticated user, then they are allow to see the books link */}
         {user && (
-          <NavLink to="books" style={activeStyle}>
-            Books
-          </NavLink>
+          <>
+            <NavLink to="books" style={activeStyle}>
+              Books
+            </NavLink>
+            <NavLink to="addbook" style={activeStyle}>
+              Add a Book
+            </NavLink>
+            <div>Total Like: {likes.length}</div>
+          </>
         )}
-        <NavLink to="addbook" style={activeStyle}>
-          Add a Book
-        </NavLink>
-        <div>Total Like: {likes.length}</div>
       </div>
       <hr />
     </>

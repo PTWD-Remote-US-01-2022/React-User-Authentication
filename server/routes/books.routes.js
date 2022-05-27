@@ -1,12 +1,14 @@
 const router = require('express').Router();
 
 const { jwtVerify } = require('../middlewares/jwtVerify.middleware');
+
+const { adminVerify } = require('../middlewares/adminVerify.middleware');
 const Book = require('../models/Book.model');
 
 // ************************************************
 // GET ALL BOOKS ROUTE
 // ************************************************
-router.get('/books', jwtVerify, (req, res, next) => {
+router.get('/books', jwtVerify, adminVerify, (req, res, next) => {
   // .find() --> always returns an array
   Book.find()
     .then((allBooksFromDB) => {
@@ -26,7 +28,7 @@ router.get('/books', jwtVerify, (req, res, next) => {
 // CREATE A NEW BOOK ROUTE
 // ************************************************
 
-router.post('/books/newbook', (req, res) => {
+router.post('/books/newbook', jwtVerify, (req, res) => {
   // console.log("this is what user added in the form: ", req.body);
 
   const { title, description, author, rating } = req.body;
@@ -45,7 +47,7 @@ router.post('/books/newbook', (req, res) => {
 // ************************************************
 // GET A BOOK DETAILS ROUTE
 // ************************************************
-router.get('/books/:bookId', (req, res) => {
+router.get('/books/:bookId', jwtVerify, (req, res) => {
   console.log('The ID is: ', req.params.bookId);
 
   Book.findById(req.params.bookId)
@@ -60,7 +62,7 @@ router.get('/books/:bookId', (req, res) => {
 // ************************************************
 // POST Route: SAVE THE CHANGES AFTER EDITING THE BOOK ROUTE
 // ************************************************
-router.post('/books/:bookID', (req, res) => {
+router.post('/books/:bookID', jwtVerify, (req, res) => {
   // console.log("updated book: ", req.body);
 
   const { title, description, author, rating } = req.body;
@@ -84,7 +86,7 @@ router.post('/books/:bookID', (req, res) => {
 // ************************************************
 // POST Route: DELETE THE BOOK ROUTE
 // ************************************************
-router.delete('/books/:bookID', (req, res) => {
+router.delete('/books/:bookID', jwtVerify, adminVerify, (req, res) => {
   Book.findByIdAndDelete(req.params.bookID)
     .then(() => res.status(200).json({ message: 'Book deleted successfully' }))
     .catch((err) =>
